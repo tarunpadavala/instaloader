@@ -23,7 +23,7 @@ def predict():
     #int_features = [int(x) for x in request.form.values()]
     #final_features = [np.array(int_features)]
     username  = request.form.get('IQ')  # Fetch single value directly
-   int_feature = np.array([int_feature])  # Convert it into a NumPy array
+   #int_feature = np.array([int_feature])  # Convert it into a NumPy array
     L = instaloader.Instaloader()
     try:
         profile = instaloader.Profile.from_username(L.context, username.strip().lower())
