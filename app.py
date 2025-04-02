@@ -22,7 +22,7 @@ def predict():
     # Extract data from form
     #int_features = [int(x) for x in request.form.values()]
     #final_features = [np.array(int_features)]
-    int_feature = int(request.form.get('your_input_field_name'))  # Fetch single value directly
+    int_feature = int(request.form.get('IQ'))  # Fetch single value directly
     username = np.array([int_feature])  # Convert it into a NumPy array
     L = instaloader.Instaloader()
     try:
