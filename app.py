@@ -28,9 +28,9 @@ def predict():
     username1 = "tarun_paspuleti"
     password = "shivayanama17"
 
-    L.login(username, password)  # Logs in
+    L.login(username1, password)  # Logs in
     L.save_session_to_file() 
-    L.load_session_from_file("your_instagram_username")
+   # L.load_session_from_file("your_instagram_username")
     try:
         profile = instaloader.Profile.from_username(L.context, username.strip().lower())
     except instaloader.exceptions.ProfileNotExistsException:
