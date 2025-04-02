@@ -28,9 +28,9 @@ def predict():
     try:
         profile = instaloader.Profile.from_username(L.context, username)
     except instaloader.exceptions.ProfileNotExistsException:
-        return jsonify(({"error": "The provided profile does not exist!"}, status=404)
+        return jsonify({"error": "The provided profile does not exist!"}, status=404)
     except instaloader.exceptions.ConnectionException:
-        return jsonify{"error": "Profile Doesnt Exists"}, status=503)
+        return jsonify({"error": "Profile Doesnt Exists"}, status=503)
     except Exception as e:
         return jsonify({"error": f"An unexpected error occurred: {str(e)}"}, status=500)
     profile_info = {
