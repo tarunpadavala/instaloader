@@ -22,11 +22,11 @@ def predict():
     # Extract data from form
     #int_features = [int(x) for x in request.form.values()]
     #final_features = [np.array(int_features)]
-    int_feature = request.form.get('IQ')  # Fetch single value directly
-    username = np.array([int_feature])  # Convert it into a NumPy array
+    username  = request.form.get('IQ')  # Fetch single value directly
+   int_feature = np.array([int_feature])  # Convert it into a NumPy array
     L = instaloader.Instaloader()
     try:
-        profile = instaloader.Profile.from_username(L.context, username)
+        profile = instaloader.Profile.from_username(L.context, username.strip().lower())
     except instaloader.exceptions.ProfileNotExistsException:
         return jsonify({"error": "The provided profile does not exist!"}, status=404)
     except instaloader.exceptions.ConnectionException:
