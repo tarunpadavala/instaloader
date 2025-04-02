@@ -21,7 +21,7 @@ def predict():
 
     # Load session instead of logging in every time
     L = instaloader.Instaloader()
-    L.load_session_from_file("session-tarun_paspuleti")
+    L.load_session_from_file("tarun_paspuleti")
 
     try:
         profile = instaloader.Profile.from_username(L.context, username.strip().lower())
