@@ -5,10 +5,8 @@ import joblib
 import xgboost
 import instaloader
 import pandas as pd
+
 # Load the trained model
-
-
-# Load the model
 model = joblib.load("model.pkl")
 
 app = Flask(__name__)
@@ -19,54 +17,36 @@ def home():
 
 @app.route('/predict', methods=['POST'])
 def predict():
-    # Extract data from form tarun_paspuleti
-    #int_features = [int(x) for x in request.form.values()]
-    #final_features = [np.array(int_features)]
-    username  = request.form.get('IQ')  # Fetch single value directly
-   #int_feature = np.array([int_feature])  Convert it into a NumPy array
-    L = instaloader.Instaloader()
-    username1 = "tarun_paspuleti"
-    password = "shivayanama17"
+    username  = request.form.get('IQ')  # Fetch single value
 
-    L.login(username1, password)  # Logs in
-    L.save_session_to_file() 
-   # L.load_session_from_file("your_instagram_username")
+    # Load session instead of logging in every time
+    L = instaloader.Instaloader()
+    L.load_session_from_file("tarun_paspuleti")
+
     try:
         profile = instaloader.Profile.from_username(L.context, username.strip().lower())
     except instaloader.exceptions.ProfileNotExistsException:
         return jsonify({"error": "The provided profile does not exist!"}), 404
     except instaloader.exceptions.ConnectionException:
-        return jsonify({"error": "Profile Doesnt Exists"}),503
+        return jsonify({"error": "Profile Doesn't Exist"}), 503
     except Exception as e:
-        return jsonify({"error": f"An unexpected error occurred: {str(e)}"}),500
+        return jsonify({"error": f"An unexpected error occurred: {str(e)}"}), 500
+
     profile_info = {
-                "profile_pic": check(profile.profile_pic_url),
-                "username_length": len(profile.username),
-                "fullname_words": len(profile.full_name.split()),
-                "fullname_length": len(profile.full_name),
-                "name_equals_username": nameOk(profile.username, profile.full_name),
-                "bio_length": len(profile.biography),
-                "external_url": Pk(bool(profile.external_url)),
-                "is_private": Pk(profile.is_private),
-                "num_posts": profile.mediacount,
-                "num_followers": profile.followers,
-                "num_follows": profile.followees,
-                # "is_verified": Pk(profile.is_verified),
-            }
-            
-    print("Bio: ",profile.biography)
-            
-            
-                
+        "username_length": len(profile.username),
+        "fullname_words": len(profile.full_name.split()),
+        "fullname_length": len(profile.full_name),
+        "bio_length": len(profile.biography),
+        "num_posts": profile.mediacount,
+        "num_followers": profile.followers,
+        "num_follows": profile.followees,
+    }
+
     profile_df = pd.DataFrame([profile_info])
     prediction = model.predict(profile_df)[0]
-            # print("Prediction",prediction)
-      
-# Make prediction
-   # prediction = model.predict(final_features)
-    output = 'Not Fake' if prediction[0] == 1 else 'Fake'
 
-    return render_template('index.html', prediction_text='Prediction: {}'.format(output))
+    output = 'Not Fake' if prediction == 1 else 'Fake'
+    return render_template('index.html', prediction_text=f'Prediction: {output}')
 
 if __name__ == "__main__":
     app.run(debug=True)
