@@ -19,12 +19,18 @@ def home():
 
 @app.route('/predict', methods=['POST'])
 def predict():
-    # Extract data from form
+    # Extract data from form tarun_paspuleti
     #int_features = [int(x) for x in request.form.values()]
     #final_features = [np.array(int_features)]
     username  = request.form.get('IQ')  # Fetch single value directly
    #int_feature = np.array([int_feature])  Convert it into a NumPy array
     L = instaloader.Instaloader()
+    username1 = "tarun_paspuleti"
+    password = "shivayanama17"
+
+    L.login(username, password)  # Logs in
+    L.save_session_to_file() 
+    L.load_session_from_file("your_instagram_username")
     try:
         profile = instaloader.Profile.from_username(L.context, username.strip().lower())
     except instaloader.exceptions.ProfileNotExistsException:
